@@ -29,15 +29,9 @@ def crawler(urlList):
 
 
 def splitList(urlList, num_core):
-    partition = []
-    for i in range(0, num_core):
-        part_len = int(len(urlList) / num_core)
-        index = part_len * i
-        if num_core - 1 == i:
-            partition.append(urlList[index:])
-        else:
-            partition.append(urlList[index:index + part_len])
-    return partition
+    part_len = len(urlList) // num_core
+    mod = len(urlList) % num_core
+    return [urlList[part_len * i:part_len * i + part_len + mod * (i == num_core - 1)] for i in range(num_core)]
 
 # def CreateCSV():
 #     with open('news_data.csv', 'w', encoding='utf-8') as csvfile:
