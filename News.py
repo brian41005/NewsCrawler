@@ -8,7 +8,7 @@ import random
 import time
 import webbrowser
 import unicodedata
-from ProcessArticle import *
+import myUtility
 from bs4 import BeautifulSoup
 from requests.exceptions import *
 
@@ -20,13 +20,16 @@ class News(threading.Thread):
     def __init__(self, *, url='', retryTime=3):
         super(News,  self).__init__(name='')
         self.url = url
+
         try:
             self.newsClass = self.url.split('/')[3]
         except IndexError as msg:
             self.newsClass = ''
+
         self.name = ''
         self.article = ''
         self.retryTime = retryTime
+        self.utility = myUtility.ArticleUtility()
 
     def run(self):
         try:
@@ -34,6 +37,9 @@ class News(threading.Thread):
             self.__GetName(soup)
             if self.name != '':
                 self.__GetArticle(soup)
+
+            if self.retryTime != 3:
+                print('[RETRY]:%s' % (self.url))
         except (ConnectionError) as msg:
             print('[%d]ConnectionError:%s' % (3 - self.retryTime, self.url))
             if self.retryTime > 0:
@@ -41,8 +47,8 @@ class News(threading.Thread):
                 time.sleep(random.random())
                 self.run()
 
-        except:
-            print(self.url)
+        except NameError as msg:
+            print(msg)
             # webbrowser.open_new_tab(self.url)
 
     def __GetName(self, soup):
@@ -50,7 +56,7 @@ class News(threading.Thread):
             self.name = soup.findAll(
                 'h1', attrs={'class': 'content__headline js-score',
                              'itemprop': 'headline'})[0].string
-            self.name = process(self.name)
+            self.name = self.utility.process(self.name)
             # print(self.name)
         except (IndexError, AttributeError) as errmsg:
             pass
@@ -59,7 +65,7 @@ class News(threading.Thread):
 
     def __GetArticle(self, soup):
         try:
-            self.article = getArticle(soup)
+            self.article = self.utility.getArticle(soup)
             # print(self.article)
         except:
             pass
