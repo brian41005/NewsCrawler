@@ -30,12 +30,6 @@ class News(threading.Thread):
 
     def run(self):
         try:
-            # headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/55.0.2883.87 Chrome/55.0.2883.87 Safari/537.36',
-            #            'Upgrade-Insecure-Requests': '1',
-            #            'Connection': 'keep-alive',
-            #            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            #            'Host': 'www.theguardian.com'
-            #            }
             soup = BeautifulSoup(requests.get(self.url, timeout=5).text, 'lxml')
             self.__GetName(soup)
             if self.name != '':
