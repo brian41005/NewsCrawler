@@ -31,7 +31,8 @@ def crawler(urlList):
 def splitList(urlList, num_core):
     part_len = len(urlList) // num_core
     mod = len(urlList) % num_core
-    return [urlList[part_len * i:part_len * i + part_len + mod * (i == num_core - 1)] for i in range(num_core)]
+    return [urlList[part_len * i:part_len * i + part_len + mod * (i == num_core - 1)]
+            for i in range(num_core)]
 
 # def CreateCSV():
 #     with open('news_data.csv', 'w', encoding='utf-8') as csvfile:
