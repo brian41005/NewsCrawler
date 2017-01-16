@@ -51,7 +51,7 @@ class News(threading.Thread):
                 'h1', attrs={'class': 'content__headline js-score',
                              'itemprop': 'headline'})[0].string
             self.name = process(self.name)
-            # print(self.name)
+            print(self.name)
         except (IndexError, AttributeError) as errmsg:
             pass
         except UnicodeEncodeError as msg:
