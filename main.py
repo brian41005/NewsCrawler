@@ -7,6 +7,7 @@ import lxml
 import multiprocessing
 import timecode
 import requests
+import csv
 from NewsPage import NewsPage
 from bs4 import BeautifulSoup
 from multiprocessing import Pool, freeze_support
@@ -66,8 +67,8 @@ if __name__ == "__main__":
     pool = Pool(processes=numProcesses)
     startTime = time.time()
     newsList = pool.map(crawler, partition)
-    print('cost %.1fs' % (time, time() - startTime)
-    result=list(chain.from_iterable(newsList))
+    print('cost %.1fs' % (time, time() - startTime))
+    result = list(chain.from_iterable(newsList))
     print('start saving.')
     saveAsCsv(result)
     print('end')
