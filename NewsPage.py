@@ -27,6 +27,7 @@ class NewsPage:
 
                     if each_block['href'] != '' and each_block['href'] != None and each_block['href'].find('https://www.theguardian.com') >= 0:
                         self.newsList.append(News(url=each_block['href']))
+
         except ConnectionError as msg:
             return
 

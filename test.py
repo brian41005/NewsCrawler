@@ -1,6 +1,4 @@
 # testing something
-
-
 def splitList(urlList, num_core):
     part_len = len(urlList) // num_core
     mod = len(urlList) % num_core

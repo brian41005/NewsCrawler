@@ -45,6 +45,7 @@ def saveAsCsv(result):
                                 lineterminator='\n',
                                 fieldnames=field_names)
         writer.writeheader()
+
         for news in result:
             writer.writerow(news)
 
@@ -56,10 +57,12 @@ if __name__ == "__main__":
     Classification = ["world", "politics", "sport", "football", "culture",
                       "business", "lifeandstyle", "fashion", "environment",
                       "technology", "travel"]
+
     urlList = generate_url_list('https://www.theguardian.com',
                                 2010,
                                 2010,
                                 Classification)
+
     partition = splitList(urlList, numProcesses)
     pool = Pool(processes=numProcesses)
     startTime = time.time()

@@ -12,8 +12,6 @@ def generate_url_list(url, startYear, endYear, newsClass, end_month=12):
     dateList = []
     year, mth = range(startYear, endYear + 1), range(1, 13)
     mth_list = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
-
-    #Classification = ["world","politics","uk/sport","football","uk/culture","uk/business","lifeandstyle","fashion","uk/environment","uk/technology","travel"]
     Classification = newsClass
     for y in year:
         for m in mth:

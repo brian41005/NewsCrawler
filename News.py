@@ -6,7 +6,6 @@ import threading
 import lxml
 import random
 import time
-import webbrowser
 import unicodedata
 import myUtility
 from bs4 import BeautifulSoup
@@ -40,6 +39,7 @@ class News(threading.Thread):
 
             if self.retryTime != 3:
                 print('[RETRY]:%s' % (self.url))
+
         except (ConnectionError) as msg:
             print('[%d]ConnectionError:%s' % (3 - self.retryTime, self.url))
             if self.retryTime > 0:
@@ -49,7 +49,6 @@ class News(threading.Thread):
 
         except NameError as msg:
             print(msg)
-            # webbrowser.open_new_tab(self.url)
 
     def __GetName(self, soup):
         try:

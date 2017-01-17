@@ -37,6 +37,7 @@ class ArticleUtility(object):
                 each_p = self.process(self.cutUrl(each_p.text))
                 if each_p != '':
                     article += each_p
+
         return article
 
 if __name__ == '__main__':
