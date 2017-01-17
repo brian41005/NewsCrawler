@@ -10,22 +10,23 @@ import requests
 from NewsPage import NewsPage
 from bs4 import BeautifulSoup
 from multiprocessing import Pool, freeze_support
+from itertools import chain
 
 
 def crawler(urlList):
-    news = []
+    pages = []
     templen = len(urlList)
     previousPercent = 0.0
     for i, url in enumerate(urlList):
-        news.append(NewsPage(url))
-        news[i].GetAllNewsData()
-        news[i].CheckThreadAlive()
+        pages.append(NewsPage(url))
+        pages[i].GetAllNewsData()
+        # news[i].CheckThreadAlive()
 
         percent = (float(i) / templen) * 100
         if abs(percent - previousPercent) > 1:
             print('%d%%' % (percent))
             previousPercent = percent
-    return news
+    return [news for page in pages for news in page.get()]
 
 
 def splitList(urlList, num_core):
@@ -56,10 +57,11 @@ if __name__ == "__main__":
     Classification = ["world", "politics", "sport", "football", "culture",
                       "business", "lifeandstyle", "fashion", "environment",
                       "technology", "travel"]
-    urlList = timecode.generate_url_list('https://www.theguardian.com', 2010, 2016, Classification)
+    urlList = timecode.generate_url_list('https://www.theguardian.com', 2010, 2010, Classification)
     partition = splitList(urlList, numProcesses)
 
     pool = Pool(processes=numProcesses)
     startTime = time.time()
-    news = pool.map(crawler, partition)
-    print('[DONE]')
+    newsList = pool.map(crawler, partition)
+    result = list(chain.from_iterable(newsList))
+    print(len(result))

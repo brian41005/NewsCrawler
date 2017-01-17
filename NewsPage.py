@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from requests.exceptions import ConnectionError
 
 
-class NewsPage(object):
+class NewsPage:
     '''
     '''
 
@@ -44,10 +44,13 @@ class NewsPage(object):
         for news in self.newsList:
             news.start()
 
+    def get(self):
+        return [news.get() for news in self.newsList if not news.isNone()]
+
 if __name__ == "__main__":
     urlList = ['https://www.theguardian.com/world/2010/feb/23/all']
     Classification = ['world']
-    urlList = timecode.generate_url_list('https://www.theguardian.com', 2010, 2010, Classification)
-    for each in urlList:
-        myNewsPage = NewsPage(each)
-        myNewsPage.GetAllNewsData()
+    #urlList = timecode.generate_url_list('https://www.theguardian.com', 2010, 2010, Classification)
+    myNewsPage = NewsPage(urlList[0])
+    myNewsPage.GetAllNewsData()
+    print(myNewsPage.__dict__)
