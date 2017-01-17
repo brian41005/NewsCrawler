@@ -55,7 +55,6 @@ if __name__ == "__main__":
     Classification = ["world", "politics", "sport", "football", "culture",
                       "business", "lifeandstyle", "fashion", "environment",
                       "technology", "travel"]
-    Classification = ['world']
     urlList = generate_url_list('https://www.theguardian.com',
                                 2010,
                                 2010,
