@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
 #! python3.5.1
-import threading
 import time
 import os
-import lxml
 import multiprocessing
-import timecode
-import requests
 import csv
 from NewsPage import NewsPage
 from bs4 import BeautifulSoup
 from multiprocessing import Pool, freeze_support
+from timecode import generate_url_list
 from itertools import chain
 
 
@@ -39,7 +36,7 @@ def splitList(urlList, num_core):
 
 def saveAsCsv(result):
     with open('news_data.csv', 'w', encoding='utf-8') as csvfile:
-        field_names = ['name', 'url', 'news_class', 'article']
+        field_names = ['name', 'url', 'class', 'article']
         writer = csv.DictWriter(csvfile,
                                 dialect='excel',
                                 delimiter=',',
@@ -53,21 +50,21 @@ def saveAsCsv(result):
 if __name__ == "__main__":
     freeze_support()
     os.system("clear")
-    # CreateCSV()
     numProcesses = int(multiprocessing.cpu_count())
-
     print('You have %d core.' % (numProcesses))
-
     Classification = ["world", "politics", "sport", "football", "culture",
                       "business", "lifeandstyle", "fashion", "environment",
                       "technology", "travel"]
-    urlList = timecode.generate_url_list('https://www.theguardian.com', 2010, 2010, Classification)
+    Classification = ['world']
+    urlList = generate_url_list('https://www.theguardian.com',
+                                2010,
+                                2010,
+                                Classification)
     partition = splitList(urlList, numProcesses)
-
     pool = Pool(processes=numProcesses)
     startTime = time.time()
     newsList = pool.map(crawler, partition)
-    print('cost %.1fs' % (time, time() - startTime))
+    print('cost %.1fs' % (time.time() - startTime))
     result = list(chain.from_iterable(newsList))
     print('start saving.')
     saveAsCsv(result)
