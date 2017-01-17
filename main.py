@@ -24,6 +24,7 @@ def crawler(urlList):
         if abs(percent - previousPercent) > 1:
             print('%d%%' % (percent))
             previousPercent = percent
+
     return [news for page in pages for news in page.get()]
 
 
