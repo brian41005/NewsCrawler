@@ -20,7 +20,7 @@ def crawler(urlList):
     for i, url in enumerate(urlList):
         pages.append(NewsPage(url))
         pages[i].GetAllNewsData()
-        # news[i].CheckThreadAlive()
+        pages[i].CheckThreadAlive()
 
         percent = (float(i) / templen) * 100
         if abs(percent - previousPercent) > 1:
@@ -35,16 +35,19 @@ def splitList(urlList, num_core):
     return [urlList[part_len * i:part_len * i + part_len + mod * (i == num_core - 1)]
             for i in range(num_core)]
 
-# def CreateCSV():
-#     with open('news_data.csv', 'w', encoding='utf-8') as csvfile:
-#         field_names = ['name', 'url', 'news_class','article']
-#         writer = csv.DictWriter(csvfile,
-#                                 dialect='excel',
-#                                 delimiter = ',',
-#                                 quoting = csv.QUOTE_MINIMAL,
-#                                 lineterminator='\n',
-#                                 fieldnames = field_names)
-#         writer.writeheader()
+
+def saveAsCsv(result):
+    with open('news_data.csv', 'w', encoding='utf-8') as csvfile:
+        field_names = ['name', 'url', 'news_class', 'article']
+        writer = csv.DictWriter(csvfile,
+                                dialect='excel',
+                                delimiter=',',
+                                quoting=csv.QUOTE_MINIMAL,
+                                lineterminator='\n',
+                                fieldnames=field_names)
+        writer.writeheader()
+        for news in result:
+            writer.writerow(news)
 
 if __name__ == "__main__":
     freeze_support()
@@ -63,5 +66,8 @@ if __name__ == "__main__":
     pool = Pool(processes=numProcesses)
     startTime = time.time()
     newsList = pool.map(crawler, partition)
-    result = list(chain.from_iterable(newsList))
-    print(len(result))
+    print('cost %.1fs' % (time, time() - startTime)
+    result=list(chain.from_iterable(newsList))
+    print('start saving.')
+    saveAsCsv(result)
+    print('end')
