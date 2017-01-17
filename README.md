@@ -4,4 +4,5 @@ This is a parallelizing and multi thread web news crawler.
     * bs4
     * lxml
     * requests
+
 ---------------------------------------
