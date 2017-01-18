@@ -30,6 +30,16 @@ class News(threading.Thread):
         self.retryTime = retryTime
         self.utility = myUtility.ArticleUtility()
 
+    # def __getstate__(self):
+    #     pass
+    #
+    # def __setstate__(self, state):
+    #     pass
+
+    def __repr__(self):
+        print(self.url)
+        return '({0},{1},{2},{3})'.format(self.url, self.name[:5], self.newsClass, self.article[:5])
+
     def run(self):
         try:
             soup = BeautifulSoup(requests.get(self.url, timeout=5).text, 'lxml')

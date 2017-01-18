@@ -19,6 +19,15 @@ class NewsPage:
         self.newsList = []
         self.__GetNewsUrl()
 
+    # def __getstate__(self):
+    #     return self.__dict__.copy()
+    #
+    # def __setstate__(self, state):
+    #     self.__dict__.update(state)
+
+    def __repr__(self):
+        return 'NewsPage:{0}'.format(self.url)
+
     def __GetNewsUrl(self):
         try:
             soup = BeautifulSoup(requests.get(self.url).text, 'lxml')
@@ -46,6 +55,7 @@ class NewsPage:
             news.start()
 
     def get(self):
+
         return [news.get() for news in self.newsList if not news.isNone()]
 
 if __name__ == "__main__":
