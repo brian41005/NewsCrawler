@@ -9,7 +9,7 @@ import time
 import unicodedata
 import myUtility
 from bs4 import BeautifulSoup
-from requests.exceptions import *
+from requests.exceptions import ConnectionError  # , ConnectionResetError
 
 
 class News(threading.Thread):
@@ -48,9 +48,9 @@ class News(threading.Thread):
                 self.__GetArticle(soup)
 
             if self.retryTime != 3:
-                print('[RETRY]:%s' % (self.url))
+                print('[RETRY][%d]:%s' % (3 - self.retryTime, self.url))
 
-        except (ConnectionError) as msg:
+        except (ConnectionError, ConnectionResetError) as msg:
             print('[%d]ConnectionError:%s' % (3 - self.retryTime, self.url))
             if self.retryTime > 0:
                 self.retryTime -= 1

@@ -13,16 +13,17 @@ from itertools import chain
 
 def crawlerfunc(urlList):
     pages = []
-    # templen = len(urlList)
-    # previousPercent = 0.0
+    templen = len(urlList)
+    previousPercent = 0.0
     for i, url in enumerate(urlList):
         pages.append(NewsPage(url))
         pages[i].GetAllNewsData()
         pages[i].CheckThreadAlive()
-        # percent = (float(i) / templen) * 100
-        # if abs(percent - previousPercent) > 1:
-        #     print('%d%%' % (percent))
-        #     previousPercent = percent
+
+        percent = (float(i) / templen) * 100
+        if abs(percent - previousPercent) > 1:
+            print('%d%%' % (percent))
+            previousPercent = percent
     return [news for page in pages for news in page.get()]
 
 
