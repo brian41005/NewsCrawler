@@ -18,7 +18,7 @@ def crawlerfunc(urlList):
     for i, url in enumerate(urlList):
         pages.append(NewsPage(url))
         pages[i].GetAllNewsData()
-        pages[i].CheckThreadAlive()
+        # pages[i].CheckThreadAlive()
 
         percent = (float(i) / templen) * 100
         if abs(percent - previousPercent) > 1:

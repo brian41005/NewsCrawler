@@ -55,7 +55,7 @@ class NewsPage:
             news.start()
 
     def get(self):
-
+        self.CheckThreadAlive()
         return [news.get() for news in self.newsList if not news.isNone()]
 
 if __name__ == "__main__":
