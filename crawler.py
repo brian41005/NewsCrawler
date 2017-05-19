@@ -27,7 +27,7 @@ def crawlerfunc(urlList):
     return [news for page in pages for news in page.get()]
 
 
-class crawler:
+class crawler():
     '''
     '''
 
@@ -47,7 +47,7 @@ class crawler:
 
     def start(self):
         print('You have %d core.' % (self.core))
-        partition = self.__splitList(self.urlList, self.core)
+        partition = self._splitList(self.urlList, self.core)
 
         self.datetime = datetime.datetime.now()
         self.startTime = time.time()
@@ -76,7 +76,7 @@ class crawler:
         print('cost:%.2fs' % (self.endTime - self.startTime))
         print('list has %d news' % (len(self.newsList)))
 
-    def __splitList(self, urlList, num_core):
+    def _splitList(self, urlList, num_core):
         part_len = len(urlList) // num_core
         mod = len(urlList) % num_core
         return [urlList[part_len * i:part_len * i + part_len + mod * (i == num_core - 1)]

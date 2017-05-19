@@ -42,10 +42,11 @@ class News(threading.Thread):
 
     def run(self):
         try:
-            soup = BeautifulSoup(requests.get(self.url, timeout=5).text, 'lxml')
-            self.__GetName(soup)
+            soup = BeautifulSoup(requests.get(
+                self.url, timeout=5).text, 'lxml')
+            self._GetName(soup)
             if self.name != '':
-                self.__GetArticle(soup)
+                self._GetArticle(soup)
 
             if self.retryTime != 3:
                 print('[RETRY][%d]:%s' % (3 - self.retryTime, self.url))
@@ -60,7 +61,7 @@ class News(threading.Thread):
         except NameError as msg:
             print(msg)
 
-    def __GetName(self, soup):
+    def _GetName(self, soup):
         try:
             self.name = soup.findAll(
                 'h1', attrs={'class': 'content__headline js-score',
@@ -72,7 +73,7 @@ class News(threading.Thread):
         except UnicodeEncodeError as msg:
             pass
 
-    def __GetArticle(self, soup):
+    def _GetArticle(self, soup):
         try:
             self.article = self.utility.getArticle(soup)
             # print(self.article)
