@@ -37,8 +37,9 @@ class crawler():
                                "technology", "travel"]
         self.urlList = generate_url_list('https://www.theguardian.com',
                                          2007,
-                                         2009,
-                                         self.classification)
+                                         2007,
+                                         self.classification,
+                                         end_month=1)
         self.startTime = None
         self.endTime = None
         self.newsList = None
@@ -53,6 +54,7 @@ class crawler():
         pool = Pool(processes=self.core)
         newsList = pool.map(crawlerfunc, partition)
         self.newsList = list(chain.from_iterable(newsList))
+        print(len(self.newsList))
         self.endTime = time.time()
 
     def save(self, filename='news_data.csv'):

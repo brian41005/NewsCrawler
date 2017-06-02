@@ -40,6 +40,9 @@ class NewsPage:
 
         except ConnectionError as msg:
             return
+        except Exception as msg:
+            print(msg)
+            return
 
     def CheckThreadAlive(self):
         while True:
