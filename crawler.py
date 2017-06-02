@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-#! python3.5.1
 import time
 import multiprocessing
 import csv
@@ -37,8 +36,8 @@ class crawler():
                                "business", "lifeandstyle", "fashion", "environment",
                                "technology", "travel"]
         self.urlList = generate_url_list('https://www.theguardian.com',
-                                         2010,
-                                         2016,
+                                         2007,
+                                         2009,
                                          self.classification)
         self.startTime = None
         self.endTime = None

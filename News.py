@@ -9,7 +9,8 @@ import time
 import unicodedata
 import myUtility
 from bs4 import BeautifulSoup
-from requests.exceptions import ConnectionError  # , ConnectionResetError
+# , ConnectionResetError
+from requests.exceptions import ConnectionError, Timeout
 
 
 class News(threading.Thread):
@@ -51,11 +52,11 @@ class News(threading.Thread):
             if self.retryTime != 3:
                 print('[RETRY][%d]:%s' % (3 - self.retryTime, self.url))
 
-        except (ConnectionError, ConnectionResetError) as msg:
+        except (ConnectionError, ConnectionResetError, Timeout) as msg:
             print('[%d]ConnectionError:%s' % (3 - self.retryTime, self.url))
             if self.retryTime > 0:
                 self.retryTime -= 1
-                time.sleep(random.random())
+                time.sleep(random.uniform(0, 5))
                 self.run()
 
         except NameError as msg:
