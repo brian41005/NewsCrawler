@@ -30,8 +30,10 @@ class NewsPage:
 
     def __GetNewsUrl(self):
         try:
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
             soup = BeautifulSoup(requests.get(
-                self.url, timeout=5).text, 'lxml')
+                self.url, timeout=5, headers=headers).text, 'lxml')
             for news_block in soup.findAll('div', attrs={'class': 'fc-item__content'}):
                 for each_block in news_block.findAll('a', href=True):
 
@@ -57,6 +59,7 @@ class NewsPage:
     def GetAllNewsData(self):
         for news in self.newsList:
             news.start()
+            time.sleep(0.05)
 
     def get(self):
         self.CheckThreadAlive()
@@ -66,7 +69,7 @@ class NewsPage:
 if __name__ == "__main__":
     urlList = ['https://www.theguardian.com/world/2010/feb/23/all']
     Classification = ['world']
-    #urlList = timecode.generate_url_list('https://www.theguardian.com', 2010, 2010, Classification)
+    # urlList = timecode.generate_url_list('https://www.theguardian.com', 2010, 2010, Classification)
     myNewsPage = NewsPage(urlList[0])
     myNewsPage.GetAllNewsData()
     print(myNewsPage.__dict__)

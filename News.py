@@ -38,13 +38,16 @@ class News(threading.Thread):
     #     pass
 
     def __repr__(self):
-        print(self.url)
+        # print(self.url)
         return '({0},{1},{2},{3})'.format(self.url, self.name[:5], self.newsClass, self.article[:5])
 
     def run(self):
         try:
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+            time.sleep(random.uniform(0, 1))
             soup = BeautifulSoup(requests.get(
-                self.url, timeout=5).text, 'lxml')
+                self.url, timeout=5, headers=headers).text, 'lxml')
             self._GetName(soup)
             if self.name != '':
                 self._GetArticle(soup)
@@ -52,8 +55,8 @@ class News(threading.Thread):
             if self.retryTime != 3:
                 print('[RETRY][%d]:%s' % (3 - self.retryTime, self.url))
 
-        except (ConnectionError, ConnectionResetError, Timeout, ReadTimeout, RequestException) as msg:
-            print('[%d]Error:%s' % (3 - self.retryTime, self.url))
+        except (ConnectionError, ConnectionResetError, Timeout, ReadTimeout) as msg:
+            print('[%d]Error:%s|%s' % (3 - self.retryTime, msg, self.url))
             if self.retryTime > 0:
                 self.retryTime -= 1
                 time.sleep(random.uniform(0, 5))
@@ -61,18 +64,20 @@ class News(threading.Thread):
 
         except NameError as msg:
             print(msg)
-        except Exception as msg:
+        except (Exception, RequestException) as msg:
             print(msg)
             pass
 
     def _GetName(self, soup):
         try:
             self.name = soup.findAll(
-                'h1', attrs={'class': 'content__headline js-score',
+                'h1', attrs={'class': 'content__headline',
                              'itemprop': 'headline'})[0].string
-            self.name = self.utility.process(self.name)
             # print(self.name)
+            self.name = self.utility.process(self.name)
+
         except (IndexError, AttributeError) as errmsg:
+            # print(errmsg)
             pass
         except UnicodeEncodeError as msg:
             pass
@@ -101,4 +106,4 @@ if __name__ == "__main__":
     for i, url in enumerate(urlList):
         newsList.append(News(url=url))
         newsList[i].start()
-        break
+    time.sleep(3)

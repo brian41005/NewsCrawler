@@ -9,14 +9,13 @@
 # n = 8
 # print(splitList(test, n))
 import datetime
+Classification = ['world']
 start = datetime.datetime.strptime('2016/12/1', '%Y/%m/%d')
-end = datetime.datetime.strptime('2017/3/3', '%Y/%m/%d')
+end = datetime.datetime.strptime('2017/1/3', '%Y/%m/%d')
 
 datelist = [(start + datetime.timedelta(days=x)).strftime('%Y/%b/%d').lower()
             for x in range(0, (end - start).days + 1)]
-# for i in datelist:
-#     print(i.strftime('%Y/%b/%d').lower())
-
-    Classification = ['world']
-    myList = generate_url_list('https://www.theguardian.com', 2010,
-                               2016, Classification, end_month=5)
+print(datelist)
+for d in datelist:
+    for c in Classification:
+        print('https://www.theguardian.com/%s/%s/all' % (c, d))

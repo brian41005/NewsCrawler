@@ -23,7 +23,9 @@ def crawlerfunc(urlList):
         if abs(percent - previousPercent) > 1:
             print('%d%%' % (percent))
             previousPercent = percent
-    return [news for page in pages for news in page.get()]
+    data = [news for page in pages for news in page.get()]
+    # print(len(data))
+    return data
 
 
 class crawler():
@@ -32,12 +34,15 @@ class crawler():
 
     def __init__(self, core=cpu_count()):
         self.core = core
-        self.classification = ["world", "politics", "sport", "football", "culture",
-                               "business", "lifeandstyle", "fashion", "environment",
-                               "technology", "travel"]
+        self.classification = ['uk-news', 'world',
+                               'business', 'technology', 'money']
+        #  ["world", "politics", "sport", "football", "culture",
+        #                    "business", "lifeandstyle", "fashion", "environment",
+        #                    "technology", "travel", 'uk-news']
+
         self.urlList = generate_url_list('https://www.theguardian.com',
-                                         2007,
-                                         2007,
+                                         '2007/1/1',
+                                         '2017/5/31',
                                          self.classification,
                                          end_month=1)
         self.startTime = None
@@ -54,7 +59,6 @@ class crawler():
         pool = Pool(processes=self.core)
         newsList = pool.map(crawlerfunc, partition)
         self.newsList = list(chain.from_iterable(newsList))
-        print(len(self.newsList))
         self.endTime = time.time()
 
     def save(self, filename='news_data.csv'):

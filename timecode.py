@@ -6,22 +6,21 @@ Created on Wed Jun 08
 @author: brian
 """
 import calendar
+import datetime
 
 
-def generate_url_list(url, startYear, endYear, newsClass, end_month=12):
+def generate_url_list(url, startdate, enddate, newsClass, end_month=12):
     dateList = []
-    year, mth = range(startYear, endYear + 1), range(1, 13)
-    mth_list = ["jan", "feb", "mar", "apr", "may",
-                "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
-    Classification = newsClass
-    for y in year:
-        for m in mth:
-            if end_month < m and y == endYear:
-                break
-            for d in range(1, calendar.monthrange(y, m)[1] + 1):
-                for c in Classification:
-                    dateList.append('%s/%s/%d/%s/%02d/all' %
-                                    (url, c, y, mth_list[m - 1], d))
+
+    start = datetime.datetime.strptime(startdate, '%Y/%m/%d')
+    end = datetime.datetime.strptime(enddate, '%Y/%m/%d')
+
+    datelist = [(start + datetime.timedelta(days=x)).strftime('%Y/%b/%d').lower()
+                for x in range(0, (end - start).days + 1)]
+    for d in datelist:
+        for c in newsClass:
+            dateList.append('https://www.theguardian.com/%s/%s/all' % (c, d))
+
     print("number of day: %d" % (len(dateList)))
     return dateList
 
@@ -30,6 +29,6 @@ if __name__ == "__main__":
     # Classification = ["world","politics","sport","football","culture","business",
     # "lifeandstyle","fashion","environment","technology","travel"]
     Classification = ['world']
-    myList = generate_url_list('https://www.theguardian.com', 2010,
-                               2016, Classification, end_month=5)
+    myList = generate_url_list('https://www.theguardian.com', '2007/1/1',
+                               '2017/5/31', Classification, end_month=5)
     print(myList[:10])
